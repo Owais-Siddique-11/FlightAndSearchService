@@ -27,11 +27,16 @@ class CityRepository {
     
     async updateCity({name},cityId){
         try {
-            const city = await City.update(data , {
-                where :{
-                    id : cityId
-                }
-            })
+            // This will also work but will not return the updated object
+            // If you are using PG then returing : true can be used, else not 
+            // const city = await City.update(data , {
+            //     where :{
+            //         id : cityId
+            //     }
+            // })
+            const city = await City.findByPk(cityId);
+            city.name = data.name;
+            await city.save();
             return city;
         } catch (error) {
             throw {error}
